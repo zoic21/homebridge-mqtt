@@ -1,15 +1,26 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "MqttHomebridgePlatform",
   "pluginType": "platform",
   "singular": true,
   "schema": {
     "type": "object",
     "properties": {
-      "name": {
-        "title": "Name",
-        "type": "string",
-        "required": true,
-        "default": "Example Dynamic Platform"
+      "mqtt" : {
+        "ip": {
+          "title": "MQTT IP:PORT",
+          "type": "string",
+          "required": true
+        },
+        "username": {
+          "title": "MQTT username",
+          "type": "string",
+          "required": false
+        },
+        "password": {
+          "title": "MQTT Password",
+          "type": "string",
+          "required": false
+        }
       }
     }
   }
