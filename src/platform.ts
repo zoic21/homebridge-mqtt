@@ -14,6 +14,7 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
   public Devices = {};
+  public ConfigDevices;
   public MqttClient;
 
   // this is used to track restored cached accessories
@@ -65,7 +66,7 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
       this.handleMqttData(topic, message);
     });
     
-    const devices = [
+    this.ConfigDevices = [
       {
         id: 'ajaxhub',
         name: 'Ajax',
@@ -89,7 +90,7 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
     ];
 
     // loop over the discovered devices and register each one if it has not already been registered
-    for (const device of devices) {
+    for (const device of this.ConfigDevices) {
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
@@ -130,7 +131,7 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
   }
 
   handleMqttData(topic,data){
-    for (const device of devices) {
+    for (const device of this.ConfigDevices) {
       if(!this.Devices[this.api.hap.uuid.generate(device.id)]){
         continue;
       }
