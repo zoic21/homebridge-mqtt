@@ -33,8 +33,8 @@ export class SecuritySystemAccessory {
   }
 
   handleSecuritySystemTargetStateSet(value) {
-    this.platform.log.debug('Triggered SET SecuritySystemTargetState, publish at :'+accessory.context.device.config.targetState.set + ' to ' + value);
-    this.platform.MqttClient.publish(accessory.context.device.config.targetState.set, value);
+    this.platform.log.debug('Triggered SET SecuritySystemTargetState, publish at :'+this.accessory.context.device.config.targetState.set + ' to ' + value);
+    this.platform.MqttClient.publish(this.accessory.context.device.config.targetState.set, value);
   }
 
   handleMqttData(topic,data){
