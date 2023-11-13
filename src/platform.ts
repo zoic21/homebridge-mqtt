@@ -106,7 +106,7 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
         // this.api.updatePlatformAccessories([existingAccessory]);
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
-        this.Devices[uuid] = getAccessoryFromDevice(device,existingAccessory);
+        this.Devices[uuid] = this.getAccessoryFromDevice(device,existingAccessory);
       } else {
         // the accessory does not yet exist, so we need to create it
         this.log.info('Adding new accessory:', device.name);
@@ -115,7 +115,7 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
         // store a copy of the device object in the `accessory.context`
         // the `context` property can be used to store any data about the accessory you may need
         accessory.context.device = device;
-        this.Devices[uuid] = getAccessoryFromDevice(device,accessory);
+        this.Devices[uuid] = this.getAccessoryFromDevice(device,accessory);
         // link the accessory to your platform
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
       }
