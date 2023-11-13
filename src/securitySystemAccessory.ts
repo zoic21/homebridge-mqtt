@@ -19,7 +19,7 @@ export class SecuritySystemAccessory {
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Ajax')
       .setCharacteristic(this.platform.Characteristic.Model, 'hub')
-      .setCharacteristic(this.platform.Characteristic.SerialNumber, 'homebridge-mqtt-ajax');
+      .setCharacteristic(this.platform.Characteristic.SerialNumber, 'homebridge-mqtt');
     // get the LightBulb service if it exists, otherwise create a new LightBulb service
     // you can create multiple services for each accessory
     this.service = this.accessory.getService(this.platform.Service.SecuritySystem) || this.accessory.addService(this.platform.Service.SecuritySystem);

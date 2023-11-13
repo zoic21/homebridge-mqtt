@@ -1,11 +1,11 @@
 import { API } from 'homebridge';
 
 import { PLATFORM_NAME } from './settings';
-import { MqttAjaxHomebridgePlatform } from './platform';
+import { MqttHomebridgePlatform } from './platform';
 
 /**
  * This method registers the platform with Homebridge
  */
 export = (api: API) => {
-  api.registerPlatform(PLATFORM_NAME, MqttAjaxHomebridgePlatform);
+  api.registerPlatform(PLATFORM_NAME, MqttHomebridgePlatform);
 };
