@@ -140,7 +140,8 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
           this.Devices[this.api.hap.uuid.generate(device.id)].handleMqttData(topic,data)
         }
         break;
-    }
+      }
+    } 
   }
 
 
