@@ -27,6 +27,27 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
   ) {
     this.log.debug('Finished initializing platform:', this.config.name);
 
+    this.ConfigDevices = [{
+      id: 'ajaxhub',
+      name: 'Ajax',
+      type: 'SecuritySystem',
+      config: {
+        state : {
+          STAY_ARM : 'ARM',
+          AWAY_ARM : 'AWAY',
+          NIGHT_ARM : 'NIGHT',
+          DISARM : 'DIRSARM',
+          ALARM_TRIGGERED : 'TRIGGER'
+        },
+        currentState : {
+            get : 'ajax'
+        },
+        targetState : {
+            set : 'ajax'
+        }
+      }
+    }];
+
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
     // in order to ensure they weren't added to homebridge already. This event can also be used
@@ -66,29 +87,6 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
       this.handleMqttData(topic, message);
     });
     
-    this.ConfigDevices = [
-      {
-        id: 'ajaxhub',
-        name: 'Ajax',
-        type: 'SecuritySystem',
-        config: {
-          state : {
-            STAY_ARM : 'ARM',
-            AWAY_ARM : 'AWAY',
-            NIGHT_ARM : 'NIGHT',
-            DISARM : 'DIRSARM',
-            ALARM_TRIGGERED : 'TRIGGER'
-          },
-          currentState : {
-              get : 'ajax'
-          },
-          targetState : {
-              set : 'ajax'
-          }
-        }
-      }
-    ];
-
     // loop over the discovered devices and register each one if it has not already been registered
     for (const device of this.ConfigDevices) {
       // generate a unique id for the accessory this should be generated from
