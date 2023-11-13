@@ -1,6 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
-import { MqttAjaxHomebridgePlatform } from './platform';
+import { MqttHomebridgePlatform } from './platform';
 
 /**
  * Platform Accessory
