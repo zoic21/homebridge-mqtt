@@ -39,7 +39,7 @@ export class SecuritySystemAccessory {
 
   handleMqttData(topic,data){
     switch (topic) {
-      case accessory.context.device.config.currentState.get:
+      case this.accessory.context.device.config.currentState.get:
         this.platform.log.debug('Update current state to :'+ data);
         break;
     }
