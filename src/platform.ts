@@ -64,7 +64,22 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
       {
         id: 'ajaxhub',
         name: 'Ajax',
-        type: 'SecuritySystem'
+        type: 'SecuritySystem',
+        config: {
+          state : {
+            STAY_ARM : 'ARM',
+            AWAY_ARM : 'AWAY',
+            NIGHT_ARM : 'NIGHT',
+            DISARM : 'DIRSARM',
+            ALARM_TRIGGERED : 'TRIGGER'
+          },
+          currentState : {
+              get : 'ajax'
+          },
+          targetState : {
+              set : 'ajax'
+          }
+        }
       }
     ];
 

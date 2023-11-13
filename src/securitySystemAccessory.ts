@@ -37,10 +37,21 @@ export class SecuritySystemAccessory {
     this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
     // each service must implement at-minimum the "required characteristics" for the given service type
     this.service.getCharacteristic(this.platform.Characteristic.SecuritySystemTargetState).onSet(this.handleSecuritySystemTargetStateSet.bind(this))
+
+    this.platform.MqttClient.subscribe((accessory.context.device.currentState.get, (err) => {}));
   }
 
   handleSecuritySystemTargetStateSet(value) {
-    this.log.debug('Triggered SET SecuritySystemTargetState:'+ value);
+    this.log.debug('Triggered SET SecuritySystemTargetState, publish at :'+accessory.context.device.targetState.set + ' to ' + value);
+    this.platform.MqttClient.publish(accessory.context.device.targetState.set, value);
+  }
+
+  handleMqttDate(topic,value){
+    switch (topic) {
+      case accessory.context.device.currentState.get:
+        this.log.debug('Update current state to :'+ value);
+        break;
+    }
   }
 
 }
