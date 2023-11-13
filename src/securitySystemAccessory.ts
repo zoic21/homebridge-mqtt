@@ -10,15 +10,6 @@ import { MqttAjaxHomebridgePlatform } from './platform';
 export class SecuritySystemAccessory {
   private service: Service;
 
-  /**
-   * These are just used to create a working example
-   * You should implement your own code to track the state of your accessory
-   */
-  private exampleStates = {
-    On: false,
-    Brightness: 100,
-  };
-
   constructor(
     private readonly platform: MqttHomebridgePlatform,
     private readonly accessory: PlatformAccessory,
@@ -42,14 +33,14 @@ export class SecuritySystemAccessory {
   }
 
   handleSecuritySystemTargetStateSet(value) {
-    this.log.debug('Triggered SET SecuritySystemTargetState, publish at :'+accessory.context.device.targetState.set + ' to ' + value);
-    this.platform.MqttClient.publish(accessory.context.device.targetState.set, value);
+    this.log.debug('Triggered SET SecuritySystemTargetState, publish at :'+accessory.context.device.config.targetState.set + ' to ' + value);
+    this.platform.MqttClient.publish(accessory.context.device.config.targetState.set, value);
   }
 
-  handleMqttDate(topic,value){
+  handleMqttData(topic,data){
     switch (topic) {
-      case accessory.context.device.currentState.get:
-        this.log.debug('Update current state to :'+ value);
+      case accessory.context.device.config.currentState.get:
+        this.log.debug('Update current state to :'+ data);
         break;
     }
   }

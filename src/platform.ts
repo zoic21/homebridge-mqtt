@@ -57,8 +57,13 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
       clientId: "mqtt-homebridge"+Math.random().toString(16).substr(2, 8),
       rejectUnauthorized: false,
       username: this.config.mqtt.username,
-      password: this.config.mqtt.password
+      password: this.config.mqtt.password,
+      reconnectPeriod: 1000
     })
+
+    this.MqttClient.on("message", (topic, message) => {
+      this.handleMqttData(topic, message);
+    });
     
     const devices = [
       {
@@ -85,40 +90,31 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
 
     // loop over the discovered devices and register each one if it has not already been registered
     for (const device of devices) {
-
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
       const uuid = this.api.hap.uuid.generate(device.id);
-
       // see if an accessory with the same uuid has already been registered and restored from
       // the cached devices we stored in the `configureAccessory` method above
       const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
-
       if (existingAccessory) {
         // the accessory already exists
         this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
-
         // if you need to update the accessory.context then you should run `api.updatePlatformAccessories`. eg.:
         // existingAccessory.context.device = device;
         // this.api.updatePlatformAccessories([existingAccessory]);
-
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
         this.Devices[uuid] = getAccessoryFromDevice(device,existingAccessory);
       } else {
         // the accessory does not yet exist, so we need to create it
         this.log.info('Adding new accessory:', device.name);
-
         // create a new accessory
         const accessory = new this.api.platformAccessory(device.name, uuid);
-
         // store a copy of the device object in the `accessory.context`
         // the `context` property can be used to store any data about the accessory you may need
         accessory.context.device = device;
-
         this.Devices[uuid] = getAccessoryFromDevice(device,accessory);
-
         // link the accessory to your platform
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
       }
@@ -129,6 +125,20 @@ export class MqttHomebridgePlatform implements DynamicPlatformPlugin {
     switch (device.type) {
       case 'SecuritySystem':
         return new SecuritySystemAccessory(this, accessory);
+        break;
+    }
+  }
+
+  handleMqttData(topic,data){
+    for (const device of devices) {
+      if(!this.Devices[this.api.hap.uuid.generate(device.id)]){
+        continue;
+      }
+      switch (device.type) {
+        case 'SecuritySystem':
+        if(topic == device.config.currentState.get){
+          this.Devices[this.api.hap.uuid.generate(device.id)].handleMqttData(topic,data)
+        }
         break;
     }
   }
